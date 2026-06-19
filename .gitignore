@@ -4,3 +4,6 @@ dist/
 .env
 .env.local
 .DS_Store
+
+# Build spec (kept locally, excluded from repo)
+webhook-inspector-claude-code-prompt.md
