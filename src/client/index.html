@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Webhook Inspector — self-hosted webhook tester &amp; debugger</title>
+    <meta
+      name="description"
+      content="Self-hosted webhook inspector and replay tool. Capture, inspect, and replay HTTP webhooks in real time."
+    />
+    <link rel="stylesheet" href="/styles.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🪝</text></svg>"
+    />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">🪝 <span>Webhook Inspector</span></div>
+      <div class="endpoint-bar" id="endpointBar" hidden>
+        <select id="endpointSelect" class="endpoint-select" title="Endpoints"></select>
+        <code class="capture-url" id="captureUrl" title="Capture URL"></code>
+        <button class="btn" id="copyUrl" title="Copy capture URL">Copy</button>
+      </div>
+      <div class="actions">
+        <span class="live" id="liveIndicator" title="Live connection">
+          <span class="dot"></span><span id="liveText">offline</span>
+        </span>
+        <button class="btn" id="configBtn" title="Configure response">Response</button>
+        <button class="btn" id="newBtn">New endpoint</button>
+        <button class="btn danger" id="clearBtn">Clear all</button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <aside class="list-pane">
+        <div class="list-head">
+          <span id="listCount">0 requests</span>
+        </div>
+        <ul class="req-list" id="reqList"></ul>
+        <div class="empty" id="listEmpty">
+          <p>No requests yet.</p>
+          <p class="muted">Send anything to your capture URL to see it here.</p>
+        </div>
+      </aside>
+
+      <section class="detail-pane" id="detailPane">
+        <div class="empty" id="detailEmpty">
+          <p>Select a request to inspect it.</p>
+        </div>
+        <div class="detail" id="detail" hidden>
+          <div class="detail-head">
+            <span class="method-badge" id="dMethod"></span>
+            <code class="d-path" id="dPath"></code>
+            <div class="spacer"></div>
+            <button class="btn" id="replayBtn">Replay</button>
+            <button class="btn danger" id="delReqBtn">Delete</button>
+          </div>
+          <div class="meta" id="dMeta"></div>
+          <nav class="tabs" id="tabs">
+            <button class="tab active" data-tab="pretty">Pretty</button>
+            <button class="tab" data-tab="raw">Raw</button>
+            <button class="tab" data-tab="headers">Headers</button>
+            <button class="tab" data-tab="query">Query</button>
+          </nav>
+          <div class="tab-body" id="tabBody"></div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Replay modal -->
+    <div class="modal-backdrop" id="replayModal" hidden>
+      <div class="modal">
+        <h2>Replay request</h2>
+        <label for="replayTarget">Target URL</label>
+        <input id="replayTarget" type="url" placeholder="https://example.com/webhook" />
+        <div class="replay-result" id="replayResult" hidden></div>
+        <div class="modal-actions">
+          <button class="btn" id="replayCancel">Cancel</button>
+          <button class="btn primary" id="replaySend">Send</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Configure response modal -->
+    <div class="modal-backdrop" id="configModal" hidden>
+      <div class="modal">
+        <h2>Configure response</h2>
+        <p class="muted">What the capture URL returns to callers.</p>
+        <label for="cfgStatus">Status code</label>
+        <input id="cfgStatus" type="number" min="100" max="599" />
+        <label for="cfgType">Content-Type</label>
+        <input id="cfgType" type="text" placeholder="text/plain" />
+        <label for="cfgBody">Body</label>
+        <textarea id="cfgBody" rows="4"></textarea>
+        <div class="modal-actions">
+          <button class="btn" id="cfgCancel">Cancel</button>
+          <button class="btn primary" id="cfgSave">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast" id="toast" hidden></div>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>
