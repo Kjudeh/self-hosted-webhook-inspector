@@ -47,6 +47,7 @@ body { display: flex; flex-direction: column; height: 100vh; }
   flex: 1;
   min-width: 200px;
 }
+.endpoint-bar[hidden] { display: none; }
 .endpoint-select {
   background: var(--bg-elev-2);
   color: var(--text);
@@ -187,6 +188,8 @@ table.kv td.v { word-break: break-all; }
   position: fixed; inset: 0; background: rgba(0,0,0,0.6);
   display: grid; place-items: center; z-index: 50; padding: 1rem;
 }
+/* Class selectors override the UA [hidden] rule, so restore it explicitly. */
+.modal-backdrop[hidden] { display: none; }
 .modal {
   background: var(--bg-elev); border: 1px solid var(--border);
   border-radius: 14px; padding: 1.5rem; width: min(95vw, 520px);

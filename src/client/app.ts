@@ -385,20 +385,31 @@ async function doReplay(): Promise<void> {
 
 async function saveConfig(): Promise<void> {
   if (!state.current) return;
+  const statusRaw = $<HTMLInputElement>("cfgStatus").value.trim();
+  const status = statusRaw === "" ? 200 : Number(statusRaw);
+  if (!Number.isInteger(status) || status < 100 || status > 599) {
+    toast("Status code must be between 100 and 599");
+    return;
+  }
   const patch = {
-    response_status: Number($<HTMLInputElement>("cfgStatus").value),
-    response_content_type: $<HTMLInputElement>("cfgType").value,
+    response_status: status,
+    response_content_type:
+      $<HTMLInputElement>("cfgType").value.trim() || "text/plain",
     response_body: $<HTMLTextAreaElement>("cfgBody").value,
   };
-  const updated = await api<EndpointWithUrl>(
-    `/api/endpoints/${state.current.slug}`,
-    { method: "PATCH", body: JSON.stringify(patch) },
-  );
-  state.current = updated;
-  const idx = state.endpoints.findIndex((e) => e.slug === updated.slug);
-  if (idx >= 0) state.endpoints[idx] = updated;
-  $("configModal").hidden = true;
-  toast("Response configuration saved");
+  try {
+    const updated = await api<EndpointWithUrl>(
+      `/api/endpoints/${state.current.slug}`,
+      { method: "PATCH", body: JSON.stringify(patch) },
+    );
+    state.current = updated;
+    const idx = state.endpoints.findIndex((e) => e.slug === updated.slug);
+    if (idx >= 0) state.endpoints[idx] = updated;
+    $("configModal").hidden = true;
+    toast("Response configuration saved");
+  } catch (err) {
+    toast("Save failed: " + (err as Error).message);
+  }
 }
 
 // ---- Boot ----
