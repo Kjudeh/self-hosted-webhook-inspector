@@ -1,6 +1,6 @@
 # Self-Hosted Webhook Inspector — capture, inspect & replay webhooks
 
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/...)
+[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/new/template/webhook-inspector)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
 
 **Webhook Inspector is a self-hosted webhook tester, debugger, and replay tool** — an open-source alternative to webhook.site, Hookdeck, and RequestBin that you run on your own infrastructure. Spin up unique capture URLs, watch incoming HTTP requests arrive in real time, inspect every header, query param, and raw body, then replay any captured request to a target of your choice.
