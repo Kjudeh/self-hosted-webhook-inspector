@@ -35,7 +35,7 @@ function presentedToken(req: FastifyRequest): string | undefined {
 
 /**
  * Guards UI + management API when ACCESS_TOKEN is configured.
- * Capture routes (/hook/*) must NOT use this — they stay public by design.
+ * Capture routes (/hooks/*) must NOT use this — they stay public by design.
  * Returns true if the request may proceed.
  */
 export function checkAccess(req: FastifyRequest, reply: FastifyReply): boolean {

@@ -124,7 +124,7 @@ function renderList(): void {
 
 function shortPath(path: string | null): string {
   if (!path) return "/";
-  return path.replace(/^\/hook\/[^/]+/, "") || "/";
+  return path.replace(/^\/hooks\/[^/]+/, "") || "/";
 }
 
 function escapeHtml(s: string): string {

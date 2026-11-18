@@ -105,6 +105,6 @@ export function registerCaptureRoutes(app: FastifyInstance): void {
       .send(endpoint.response_body);
   };
 
-  app.route({ method: CAPTURE_METHODS as never, url: "/hook/:slug", handler });
-  app.route({ method: CAPTURE_METHODS as never, url: "/hook/:slug/*", handler });
+  app.route({ method: CAPTURE_METHODS as never, url: "/hooks/:slug", handler });
+  app.route({ method: CAPTURE_METHODS as never, url: "/hooks/:slug/*", handler });
 }
