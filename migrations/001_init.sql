@@ -30,3 +30,6 @@ CREATE TABLE IF NOT EXISTS requests (
 
 CREATE INDEX IF NOT EXISTS idx_requests_endpoint_received
   ON requests (endpoint_id, received_at DESC);
+
+ALTER TABLE endpoints
+ADD COLUMN IF NOT EXISTS cors_enabled BOOLEAN NOT NULL DEFAULT FALSE;

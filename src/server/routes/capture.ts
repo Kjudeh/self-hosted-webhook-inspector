@@ -41,6 +41,30 @@ export function registerCaptureRoutes(app: FastifyInstance): void {
     if (!endpoint) {
       return reply.code(404).send({ error: "unknown endpoint" });
     }
+    if (endpoint.cors_enabled) {
+      reply.header("Access-Control-Allow-Origin", "*");
+      reply.header(
+        "Access-Control-Allow-Methods",
+        "GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS",
+      );
+    
+      const requestedHeaders =
+        req.headers["access-control-request-headers"];
+
+      if (typeof requestedHeaders === "string") {
+        reply.header("Access-Control-Allow-Headers", requestedHeaders);
+        reply.header("Vary", "Access-Control-Request-Headers");
+      }
+
+      // Answer browser preflight requests before capturing the actual request.
+      if (
+        req.method === "OPTIONS" &&
+        req.headers.origin &&
+        req.headers["access-control-request-method"]
+      ) {
+        return reply.code(204).send();
+      }
+    }
 
     // body is a Buffer thanks to the wildcard content-type parser.
     const buf: Buffer = Buffer.isBuffer(req.body) ? req.body : Buffer.alloc(0);
@@ -81,6 +105,6 @@ export function registerCaptureRoutes(app: FastifyInstance): void {
       .send(endpoint.response_body);
   };
 
-  app.route({ method: CAPTURE_METHODS as never, url: "/hook/:slug", handler });
-  app.route({ method: CAPTURE_METHODS as never, url: "/hook/:slug/*", handler });
+  app.route({ method: CAPTURE_METHODS as never, url: "/hooks/:slug", handler });
+  app.route({ method: CAPTURE_METHODS as never, url: "/hooks/:slug/*", handler });
 }

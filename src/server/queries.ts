@@ -45,6 +45,7 @@ export async function updateEndpointResponse(
     response_status?: number;
     response_body?: string;
     response_content_type?: string;
+    cors_enabled?: boolean;
   },
 ): Promise<Endpoint | null> {
   const sets: string[] = [];
@@ -56,6 +57,7 @@ export async function updateEndpointResponse(
     "response_status",
     "response_body",
     "response_content_type",
+    "cors_enabled",
   ] as const) {
     if (patch[key] !== undefined) {
       sets.push(`${key} = $${i++}`);

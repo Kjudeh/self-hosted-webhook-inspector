@@ -9,6 +9,7 @@ export interface Endpoint {
   response_status: number;
   response_body: string;
   response_content_type: string;
+  cors_enabled: boolean;
 }
 
 export interface CapturedRequest {

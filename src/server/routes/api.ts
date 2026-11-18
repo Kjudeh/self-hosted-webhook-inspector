@@ -27,11 +27,11 @@ function readJson<T>(req: FastifyRequest): T {
 }
 
 function captureUrl(req: FastifyRequest, slug: string): string {
-  if (config.publicUrl) return `${config.publicUrl}/hook/${slug}`;
+  if (config.publicUrl) return `${config.publicUrl}/hooks/${slug}`;
   const proto =
     (req.headers["x-forwarded-proto"] as string | undefined) ?? req.protocol;
   const host = req.headers["host"] ?? `localhost:${config.port}`;
-  return `${proto}://${host}/hook/${slug}`;
+  return `${proto}://${host}/hooks/${slug}`;
 }
 
 export function registerApiRoutes(app: FastifyInstance): void {
@@ -95,8 +95,16 @@ export function registerApiRoutes(app: FastifyInstance): void {
       response_status?: number;
       response_body?: string;
       response_content_type?: string;
+      cors_enabled?: boolean;
     }>(req);
-
+    if (
+      body.cors_enabled !== undefined &&
+      typeof body.cors_enabled !== "boolean"
+    ) {
+      return reply.code(400).send({
+        error: "cors_enabled must be a boolean",
+      });
+    }
     if (
       body.response_status !== undefined &&
       (!Number.isInteger(body.response_status) ||

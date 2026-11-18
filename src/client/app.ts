@@ -124,7 +124,7 @@ function renderList(): void {
 
 function shortPath(path: string | null): string {
   if (!path) return "/";
-  return path.replace(/^\/hook\/[^/]+/, "") || "/";
+  return path.replace(/^\/hooks\/[^/]+/, "") || "/";
 }
 
 function escapeHtml(s: string): string {
@@ -347,6 +347,7 @@ function bindEvents(): void {
     $<HTMLInputElement>("cfgStatus").value = String(state.current.response_status);
     $<HTMLInputElement>("cfgType").value = state.current.response_content_type;
     $<HTMLTextAreaElement>("cfgBody").value = state.current.response_body;
+    $<HTMLInputElement>("cfgCors").checked = state.current.cors_enabled;
     $("configModal").hidden = false;
   });
   $("cfgCancel").addEventListener("click", () => ($("configModal").hidden = true));
@@ -396,6 +397,7 @@ async function saveConfig(): Promise<void> {
     response_content_type:
       $<HTMLInputElement>("cfgType").value.trim() || "text/plain",
     response_body: $<HTMLTextAreaElement>("cfgBody").value,
+    cors_enabled: $<HTMLInputElement>("cfgCors").checked,
   };
   try {
     const updated = await api<EndpointWithUrl>(
